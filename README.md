@@ -10,7 +10,7 @@ https://github.com/v-bibliotek/temp/blob/master/Screen%20Recording%202020-12-12%
 
 ## Prop perPage in ReferenceManyToManyInput
 
-The perPage prop should be honoured in the ReferenceManyToManyInput as in the ReferenceManyToManyField. Currently it is limited to load 25 relations. Hence, not all options can be displayed properly:
+The perPage prop should be honoured in the ReferenceManyToManyInput as in the ReferenceManyToManyField. Currently it is limited to load 25 relations. Hence, not all options are displayed in the SelectArrayInput options list.
 
 https://github.com/v-bibliotek/temp/blob/master/ReferenceManyToManyInput%20-%2025%20limit%2C%20perPage%20not%20honoured.mov
 
