@@ -16,8 +16,13 @@ https://github.com/v-bibliotek/temp/blob/master/ReferenceManyToManyInput%20-%202
 
 ## useReferenceManyToManyUpdate
 
+### Multiple many-to-many-related resources?
 Can an edit form only save one many-to-many-relation using the hook `useReferenceManyToManyUpdate`? In other words as developer I have to choose what the user is able to edit a form, either _subject terms_, _authors_, _age categories_ or _genres_? 
 
 Would supplying an array of relations to the hook be a solution?
+
+### Saving requires change in source-resource
+
+Assume I edit a resource, say the _books_-resource. The resource has a many-to-many-relations with the _subjects_-resource. When pressing save the data has to contain changes of the _books_-resource. If data only contains changes of the related resource, the _subjects_-resource, data will not be saved. 
 
 
