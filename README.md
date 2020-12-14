@@ -2,9 +2,9 @@
 
 This may be issues related to my implementation rather than the component itself.
 
-## SelectArrayInput not populated on first visit to editform of item
+## SelectArrayInput not populated on first visit to editform
 
-Screen recording showing how one has to revisit the edit form in order for the SelectArrayInput to be properly populated.
+Screen recording showing how one has to revisit the edit form of an item in order for the SelectArrayInput to be properly populated.
 
 https://github.com/v-bibliotek/temp/blob/master/Screen%20Recording%202020-12-12%20at%2020.30.53.mov
 
@@ -17,7 +17,7 @@ https://github.com/v-bibliotek/temp/blob/master/ReferenceManyToManyInput%20-%202
 ## useReferenceManyToManyUpdate
 
 ### Multiple many-to-many-related resources?
-Can an edit form only save one many-to-many-relation using the hook `useReferenceManyToManyUpdate`? In other words as developer I have to choose what the user is able to edit a form, either _subject terms_, _authors_, _age categories_ or _genres_? 
+Can an edit form only save one many-to-many-relation using the hook `useReferenceManyToManyUpdate`? In other words, do I have to choose one of the fields _subject terms_, _authors_, _age categories_ or _genres_ to be editable along with a book? 
 
 Would supplying an array of relations to the hook be a solution?
 
