@@ -28,9 +28,3 @@ A workaround that I'm using is to fetch the options using useQueryWithStore on m
 
 ### Multiple many-to-many-related resources in one edit-form?
 Can an edit form only save one many-to-many-relation using the hook `useReferenceManyToManyUpdate`? In other words, do I have to choose one of the fields _subject terms_, _authors_, _age categories_ or _genres_ to be editable in the same edit form? 
-
-### Saving
-
-When saving the changes in the edit-form it fails if the only changes are to the SelectArrayInput for subjects. To be able to save the data it has to contain changes for the books-resource as well. This is likely an error in the data provider (currently ra-data-hasura-graphql). 
-
-
