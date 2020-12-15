@@ -8,6 +8,7 @@ Assume that the many-to-many-relation between resources is as follows:
 books <-> books_subjects <-> subjects
 ```
 
+_subjects_ are to be selected from an SelectArrayInput in an edit-form for the _books_-resource. 
 
 ## SelectArrayInput not populated on first visit to editform
 
