@@ -1,4 +1,4 @@
-# Issues with ReferenceManyToManyInput
+# Issues with ReferenceManyToManyInput (ra-relationship v2)
 
 This may be issues related to my implementation rather than in the component itself.
 
