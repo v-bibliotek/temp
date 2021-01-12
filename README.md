@@ -15,9 +15,18 @@ For example _subjects_ are to be selected from an SelectArrayInput or an AutoCom
 
 ## Changing just the resource, not any of the referenced data, hides the referenced data
 
-In the editing form, if changing just data of the titles-resource without touching the referenced data then the referenced data is hidden after pressing _Save_.
+In the editing form, changing just data of the titles-resource without touching the referenced data then the referenced data is hidden after pressing _Save_.
 
-This is illustrated in the following screen recording, where I change data of the title in the _Base information_-tab, then switch the _Attributes_-tab that contains the referenced data and then press save.
+This is illustrated in the following screen recordings. In the recordings the _Base information_-tab contains just data from _titles_-resource and the _Attributes_-tab contains just many-to-many-referenced data. 
+
+Just changing data of the resource makes the referenced data hide. In the end of the recording the screen is reloaded hard and the referenced data is shown again:
+
+https://github.com/v-bibliotek/temp/blob/master/Screen%20Recording%202021-01-12%20at%2009.59.13.mov
+
+Referenced data that is changed will still be visible:
+
+https://github.com/v-bibliotek/temp/blob/master/Screen%20Recording%202021-01-12%20at%2010.30.45.mov
+
 
 ## ~~SelectArrayInput not populated on first visit to editform~~
 
