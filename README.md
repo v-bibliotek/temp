@@ -17,9 +17,9 @@ For example _subjects_ are to be selected from an SelectArrayInput or an AutoCom
 
 In case no changes are made to the resource _titles_, just to any of the referenced resources, say _subjects_ - as Save is pressed an update will be sent for both _titles_ and _subjects_ resources. The update statement for _titles_ contains no fields as there are no changes - that is correct. However should the update be sent at all or could we save a roundtrip? 
 
-Previously one could use the hook _useReferenceManyToManyUpdate_ to intercept the save action and altering the diff. The empty update of _titles_ does no harm, but as I'm using a graphql endpoint the response contains no values and the apollo client expects at least an id in return else it barfs about `The response to 'update' must be like { data: { id: 123, ... } }, but the received data does not have an 'id' key. The dataProvider is probably wrong for 'update'`. So I'll get back `Server communication error` instead of `Saved`. 
+The empty update of _titles_ does no harm, but as I'm using a graphql endpoint the response contains no values and the apollo client expects at least an id in return else it barfs about `The response to 'update' must be like { data: { id: 123, ... } }, but the received data does not have an 'id' key. The dataProvider is probably wrong for 'update'`. So I'll get back `Server communication error` instead of `Saved`. 
 
-I'm not sure where to handle this properly in v2 as the hook _useReferenceManyToManyUpdate_ has been removed. Is this supposed to be handled by the _ManyToManyReferenceContextProvider_ or in the dataProvider somehow?
+Previously one could use the hook _useReferenceManyToManyUpdate_ to intercept the save action. I'm not sure where to handle this properly in v2 as the hook _useReferenceManyToManyUpdate_ has been removed. It sounds like a responsibility to the dataprovider not the _ManyToManyReferenceContextProvider_, am I right?
 
 This is what is sent to the graphql endpoint, notice the empty _set_-variable.
 
