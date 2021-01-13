@@ -19,7 +19,7 @@ In case no changes are made to the resource _titles_, just to any of the referen
 
 The empty update of _titles_ does no harm, but as I'm using a graphql endpoint the response contains no values and the apollo client expects at least an id in return else it barfs about `The response to 'update' must be like { data: { id: 123, ... } }, but the received data does not have an 'id' key. The dataProvider is probably wrong for 'update'`. So I'll get back `Server communication error` instead of `Saved`. 
 
-Previously one could use the hook _useReferenceManyToManyUpdate_ to intercept the save action. I'm not sure where to handle this properly in v2 as the hook _useReferenceManyToManyUpdate_ has been removed. It sounds like a responsibility to the dataprovider not the _ManyToManyReferenceContextProvider_, am I right?
+Previously one could use the hook _useReferenceManyToManyUpdate_ to intercept the save action. I'm not sure where to handle this properly in v2 as the hook _useReferenceManyToManyUpdate_ has been removed. It sounds like a responsibility to the dataprovider, am I right?
 
 This is what is sent to the graphql endpoint, notice the empty _set_-variable.
 
