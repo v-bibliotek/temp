@@ -16,7 +16,7 @@ For example _subjects_ are to be selected from an SelectArrayInput or an AutoCom
 
 ## Inputs nested in ReferenceManyToManyInput in a create-form are populated from start
 
-https://github.com/v-bibliotek/temp/blob/master/create-populated.png
+![Screenshot](create-populated.png)
 
 ```
 <Create
