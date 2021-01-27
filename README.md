@@ -87,6 +87,29 @@ For example _subjects_ are to be selected from an SelectArrayInput or an AutoCom
     </Create>
 ```
 
+Queries related to the populating the _Attributes_ _AutocompleteArrayInput_ in order:
+
+```JSON
+{
+  "operationName": "metadata_titles_attributes",
+  "variables": { "where": { "title_id": {} }, "limit": 25, "offset": 0, "order_by": { "id": "desc" } },
+  "query": "query metadata_titles_attributes($limit: Int, $offset: Int, $order_by: [metadata_titles_attributes_order_by!]!, $where: metadata_titles_attributes_bool_exp) {\n  items: metadata_titles_attributes(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {\n    attribute_id\n    id\n    title_id\n    __typename\n  }\n  total: metadata_titles_attributes_aggregate(order_by: $order_by, where: $where) {\n    aggregate {\n      count\n      __typename\n    }\n    __typename\n  }\n}\n"
+}
+
+{
+  "operationName": "metadata_attributes",
+  "variables": { "where": { "_and": [] }, "limit": 25, "offset": 0, "order_by": { "id": "desc" } },
+  "query": "query metadata_attributes($limit: Int, $offset: Int, $order_by: [metadata_attributes_order_by!]!, $where: metadata_attributes_bool_exp) {\n  items: metadata_attributes(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {\n    description\n    id\n    name\n    type\n    __typename\n  }\n  total: metadata_attributes_aggregate(order_by: $order_by, where: $where) {\n    aggregate {\n      count\n      __typename\n    }\n    __typename\n  }\n}\n"
+}
+
+
+{
+  "operationName": "metadata_attributes",
+  "variables": { "where": { "id": { "_in": [3, 1, 4, 2] } } },
+  "query": "query metadata_attributes($where: metadata_attributes_bool_exp) {\n  items: metadata_attributes(where: $where) {\n    description\n    id\n    name\n    type\n    __typename\n  }\n  total: metadata_attributes_aggregate(where: $where) {\n    aggregate {\n      count\n      __typename\n    }\n    __typename\n  }\n}\n"
+}
+```
+
 
 ## Prop perPage in ReferenceManyToManyInput
 
@@ -116,36 +139,27 @@ And the queries executed to populate the subjects _SelectArrayInput_:
 
 ```JSON
 {
-  operationName: "metadata_titles_subjects"
-  query: "query metadata_titles_subjects($limit: Int, $offset: Int, $order_by: [metadata_titles_subjects_order_by!]!, $where: metadata_titles_subjects_bool_exp) {↵  items: metadata_titles_subjects(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {↵    id↵    subject_id↵    title_id↵    __typename↵  }↵  total: metadata_titles_subjects_aggregate(order_by: $order_by, where: $where) {↵    aggregate {↵      count↵      __typename↵    }↵    __typename↵  }↵}↵"
-  variables: {where: {title_id: {}}, limit: 25, offset: 0, order_by: {id: "desc"}}
-  limit: 25
-  offset: 0
-  order_by: {id: "desc"}
-  where: {title_id: {}}
+  "operationName": "metadata_titles_subjects",
+  "variables": { "where": { "title_id": {} }, "limit": 25, "offset": 0, "order_by": { "id": "desc" } },
+  "query": "query metadata_titles_subjects($limit: Int, $offset: Int, $order_by: [metadata_titles_subjects_order_by!]!, $where: metadata_titles_subjects_bool_exp) {\n  items: metadata_titles_subjects(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {\n    id\n    subject_id\n    title_id\n    __typename\n  }\n  total: metadata_titles_subjects_aggregate(order_by: $order_by, where: $where) {\n    aggregate {\n      count\n      __typename\n    }\n    __typename\n  }\n}\n"
 }
 ```
 
 ```JSON
 {
-  operationName: "metadata_subjects"
-  query: "query metadata_subjects($limit: Int, $offset: Int, $order_by: [metadata_subjects_order_by!]!, $where: metadata_subjects_bool_exp) {↵  items: metadata_subjects(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {↵    description↵    id↵    targetgroup_id↵    type↵    __typename↵  }↵  total: metadata_subjects_aggregate(order_by: $order_by, where: $where) {↵    aggregate {↵      count↵      __typename↵    }↵    __typename↵  }↵}↵"
-  variables: {where: {_and: []}, limit: 25, offset: 0, order_by: {id: "desc"}}
-  limit: 25
-  offset: 0
-  order_by: {id: "desc"}
-  where: {_and: []}
+  "operationName": "metadata_subjects",
+  "variables": { "where": { "_and": [] }, "limit": 25, "offset": 0, "order_by": { "id": "desc" } },
+  "query": "query metadata_subjects($limit: Int, $offset: Int, $order_by: [metadata_subjects_order_by!]!, $where: metadata_subjects_bool_exp) {\n  items: metadata_subjects(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {\n    description\n    id\n    targetgroup_id\n    type\n    __typename\n  }\n  total: metadata_subjects_aggregate(order_by: $order_by, where: $where) {\n    aggregate {\n      count\n      __typename\n    }\n    __typename\n  }\n}\n"
 }
 ```
 
 ```JSON
 {
-  operationName: "metadata_subjects"
-  query: "query metadata_subjects($where: metadata_subjects_bool_exp) {↵  items: metadata_subjects(where: $where) {↵    description↵    id↵    targetgroup_id↵    type↵    __typename↵  }↵  total: metadata_subjects_aggregate(where: $where) {↵    aggregate {↵      count↵      __typename↵    }↵    __typename↵  }↵}↵"
-  variables: {where: {id: {_in: [38, 41, 40, 39, 43, 42, 47, 13, 7, 1, 10, 3, 8, 11, 2]}}}
-  where: {id: {_in: [38, 41, 40, 39, 43, 42, 47, 13, 7, 1, 10, 3, 8, 11, 2]}}
-  id: {_in: [38, 41, 40, 39, 43, 42, 47, 13, 7, 1, 10, 3, 8, 11, 2]}
+  "operationName": "metadata_subjects",
+  "variables": { "where": { "id": { "_in": [38, 41, 40, 39, 43, 42, 47, 13, 7, 1, 10, 3, 8, 11, 2] } } },
+  "query": "query metadata_subjects($where: metadata_subjects_bool_exp) {\n  items: metadata_subjects(where: $where) {\n    description\n    id\n    targetgroup_id\n    type\n    __typename\n  }\n  total: metadata_subjects_aggregate(where: $where) {\n    aggregate {\n      count\n      __typename\n    }\n    __typename\n  }\n}\n"
 }
+
 ```
 
 ~~The perPage prop should be honoured in the ReferenceManyToManyInput. Currently the response is limited to 25 relations. Hence, not all options are displayed in the SelectArrayInput options list, instead it renders empty chipfields.~~
