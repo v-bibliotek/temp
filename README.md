@@ -13,7 +13,170 @@ So the editing form uses _titles_ as resource and _subjects_, _contributors_ and
 
 For example _subjects_ are to be selected from an SelectArrayInput or an AutoCompleteArrayInput in an edit-form for the _titles_-resource. 
 
-## Handling change of just referenced data
+## Inputs nested in ReferenceManyToManyInput in a create-form are populated from start
+
+```
+<Create
+      {...props}
+      title={<Heading />}
+      actions={<TitleCreateActions />}
+      onFailure={onFailure}
+      onSuccess={onSuccess}
+      undoable={false}
+    >
+      <ManyToManyReferenceContextProvider>
+        <TabbedForm>
+          <FormTab label="Attributes" {...props}>
+            <ReferenceManyToManyInput
+              source="id"
+              reference="metadata_subjects"
+              through="metadata_titles_subjects"
+              using="title_id,subject_id"
+              fullWidth
+              label="Subjects"
+              perPage={1000}
+            >
+              <SelectArrayInput
+                source="type"
+                optionValue="id"
+                optionText="type"
+                translateChoice={false}
+              />
+            </ReferenceManyToManyInput>
+
+            <ReferenceManyToManyInput
+              source="id"
+              reference="metadata_contributors"
+              through="metadata_titles_contributors"
+              using="title_id,contributor_id"
+              fullWidth
+              label="Contributors"
+              perPage={1000}
+            >
+              <AutocompleteArrayInput
+                source="name"
+                optionText="name"
+                optionValue="id"
+                // choices={contributorsChoices}
+                translateChoice={false}
+                suggestionLimit={30}
+              />
+            </ReferenceManyToManyInput>
+
+            <ReferenceManyToManyInput
+              source="id"
+              reference="metadata_attributes"
+              through="metadata_titles_attributes"
+              using="title_id,attribute_id"
+              fullWidth
+              label="Attributes"
+              perPage={1000}
+            >
+              <AutocompleteArrayInput
+                source="name"
+                optionText="name"
+                optionValue="id"
+                translateChoice={false}
+                // shouldRenderSuggestions={(value) => value.length > 1}
+                suggestionLimit={30}
+              />
+            </ReferenceManyToManyInput>
+          </FormTab>
+        </TabbedForm>
+      </ManyToManyReferenceContextProvider>
+    </Create>
+```
+
+
+## Prop perPage in ReferenceManyToManyInput
+
+Tested in a create form - the _perPage_ of _ReferenceManyToManyInput_ is not honoured. After setting _perPage={1000}_ the query still limits the query of the associative table to 25.
+
+```HTML
+            <ReferenceManyToManyInput
+              source="id"
+              reference="metadata_subjects"
+              through="metadata_titles_subjects"
+              using="title_id,subject_id"
+              fullWidth
+              label="Subjects"
+              perPage={1000}
+            >
+              <SelectArrayInput
+                source="type"
+                optionValue="id"
+                optionText="type"
+                translateChoice={false}
+              />
+            </ReferenceManyToManyInput>
+````
+
+And the queries executed to populate the subjects _SelectArrayInput_:
+
+
+```JSON
+{
+  operationName: "metadata_titles_subjects"
+  query: "query metadata_titles_subjects($limit: Int, $offset: Int, $order_by: [metadata_titles_subjects_order_by!]!, $where: metadata_titles_subjects_bool_exp) {↵  items: metadata_titles_subjects(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {↵    id↵    subject_id↵    title_id↵    __typename↵  }↵  total: metadata_titles_subjects_aggregate(order_by: $order_by, where: $where) {↵    aggregate {↵      count↵      __typename↵    }↵    __typename↵  }↵}↵"
+  variables: {where: {title_id: {}}, limit: 25, offset: 0, order_by: {id: "desc"}}
+  limit: 25
+  offset: 0
+  order_by: {id: "desc"}
+  where: {title_id: {}}
+}
+```
+
+```JSON
+{
+  operationName: "metadata_subjects"
+  query: "query metadata_subjects($limit: Int, $offset: Int, $order_by: [metadata_subjects_order_by!]!, $where: metadata_subjects_bool_exp) {↵  items: metadata_subjects(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {↵    description↵    id↵    targetgroup_id↵    type↵    __typename↵  }↵  total: metadata_subjects_aggregate(order_by: $order_by, where: $where) {↵    aggregate {↵      count↵      __typename↵    }↵    __typename↵  }↵}↵"
+  variables: {where: {_and: []}, limit: 25, offset: 0, order_by: {id: "desc"}}
+  limit: 25
+  offset: 0
+  order_by: {id: "desc"}
+  where: {_and: []}
+}
+```
+
+```JSON
+{
+  operationName: "metadata_subjects"
+  query: "query metadata_subjects($where: metadata_subjects_bool_exp) {↵  items: metadata_subjects(where: $where) {↵    description↵    id↵    targetgroup_id↵    type↵    __typename↵  }↵  total: metadata_subjects_aggregate(where: $where) {↵    aggregate {↵      count↵      __typename↵    }↵    __typename↵  }↵}↵"
+  variables: {where: {id: {_in: [38, 41, 40, 39, 43, 42, 47, 13, 7, 1, 10, 3, 8, 11, 2]}}}
+  where: {id: {_in: [38, 41, 40, 39, 43, 42, 47, 13, 7, 1, 10, 3, 8, 11, 2]}}
+  id: {_in: [38, 41, 40, 39, 43, 42, 47, 13, 7, 1, 10, 3, 8, 11, 2]}
+}
+```
+
+~~The perPage prop should be honoured in the ReferenceManyToManyInput. Currently the response is limited to 25 relations. Hence, not all options are displayed in the SelectArrayInput options list, instead it renders empty chipfields.~~
+
+~~https://github.com/v-bibliotek/temp/blob/master/ReferenceManyToManyInput%20-%2025%20limit%2C%20perPage%20not%20honoured.mov~~
+
+~~A workaround that I'm using is to fetch the options using useQueryWithStore on mount and assing them to the choices-prop. However, this means another network request.~~
+
+## Improvement: filter reference table
+
+A nice feature would be to be able to filter data returned from the reference table. In this pseudocode only the _subjects_ having _targetgroup_id = 1_ will be available as options in the _SelectArrayInput_.
+
+```HTML
+      <ReferenceManyToManyInput
+        source="id"
+        reference="subjects"
+        filterReference={{targetgroup_id: 1}}
+        through="titles_subjects"
+        using="title_id,subject_id"
+        label="Subjects"
+      >
+        <SelectArrayInput
+          source="name"
+          optionValue="id"
+          optionText="name"
+          translateChoice={false}
+        />
+      </ReferenceManyToManyInput>
+```
+
+## Improvement: Handling change of just referenced data
 
 In case no changes are made to the resource _titles_, just to any of the referenced resources, say _subjects_ - as Save is pressed an update will be sent for both _titles_ and _subjects_ resources. The update statement for _titles_ contains no fields as there are no changes - that is correct. However should the update be sent at all or could we save a roundtrip? 
 
@@ -27,7 +190,9 @@ This is what is sent to the graphql endpoint, notice the empty _set_-variable.
 {operationName: "update_metadata_titles", variables: {_set: {}, where: {id: {_eq: 8812}}},…}
 ```
 
-## Changing just the resource, not any of the referenced data, hides the referenced data
+## Changing just the resource, not any of the referenced data, hides the referenced data after save
+
+Bug? 
 
 In the editing form, changing just data of the titles-resource without touching the referenced data then the referenced data is hidden after pressing _Save_.
 
@@ -41,21 +206,12 @@ Referenced data that is changed will still be visible:
 
 https://github.com/v-bibliotek/temp/blob/master/Screen%20Recording%202021-01-12%20at%2010.30.45.mov
 
+
 ## ~~SelectArrayInput not populated on first visit to editform~~
 
 ~~A screen recording showing how one has to revisit the edit form of an item in order for the SelectArrayInput to be populated with the current values. If it was just that the optionText-prop was missing in the data then empty chipfields would be displayed.~~
 
 ~~https://github.com/v-bibliotek/temp/blob/master/Screen%20Recording%202020-12-12%20at%2020.30.53.mov~~
-
-## Prop perPage in ReferenceManyToManyInput
-
-Haven't tested this yet as I'm now filtering the list of for example _conbtributors_ based on language.
-
-~~The perPage prop should be honoured in the ReferenceManyToManyInput. Currently the response is limited to 25 relations. Hence, not all options are displayed in the SelectArrayInput options list, instead it renders empty chipfields.~~
-
-~~https://github.com/v-bibliotek/temp/blob/master/ReferenceManyToManyInput%20-%2025%20limit%2C%20perPage%20not%20honoured.mov~~
-
-~~A workaround that I'm using is to fetch the options using useQueryWithStore on mount and assing them to the choices-prop. However, this means another network request.~~
 
 ## ~~useReferenceManyToManyUpdate~~
 
