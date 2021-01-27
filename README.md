@@ -90,7 +90,7 @@ For example _subjects_ are to be selected from an SelectArrayInput or an AutoCom
     </Create>
 ```
 
-Queries related to the populating the _Attributes_ _AutocompleteArrayInput_ in order:
+Queries related to the populating of the _Attributes_ _AutocompleteArrayInput_, in order:
 
 ```JSON
 {
